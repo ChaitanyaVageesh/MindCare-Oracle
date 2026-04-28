@@ -140,17 +140,17 @@ function App() {
         <p className="subtitle">Real-time monitoring and experiment tracking access points.</p>
         
         <div className="dashboard-links">
-          <a href="http://localhost:5000" target="_blank" rel="noreferrer" className="dash-link">
+          <a href="http://localhost:5001" target="_blank" rel="noreferrer" className="dash-link">
             <span>MLflow Experiment Tracking <br/><small style={{opacity: 0.6}}>View model parameters & evaluation metrics</small></span>
             <span className="dash-icon">🧪</span>
           </a>
-          
+
           <a href="http://localhost:3001/d/mindcare/mindcare-performance" target="_blank" rel="noreferrer" className="dash-link">
             <span>Grafana Metrics Dashboard <br/><small style={{opacity: 0.6}}>Live throughput, inference speed & error rates</small></span>
             <span className="dash-icon">📊</span>
           </a>
 
-          <a href="http://localhost:8000/docs" target="_blank" rel="noreferrer" className="dash-link">
+          <a href="http://localhost:8001/docs" target="_blank" rel="noreferrer" className="dash-link">
             <span>FastAPI Swagger UI <br/><small style={{opacity: 0.6}}>Endpoint interface specifications & I/O testing</small></span>
             <span className="dash-icon">⚡</span>
           </a>
@@ -158,6 +158,11 @@ function App() {
           <a href="http://localhost:9090" target="_blank" rel="noreferrer" className="dash-link">
             <span>Prometheus Target Scraper <br/><small style={{opacity: 0.6}}>Hardware & Endpoint level instrumentation targets</small></span>
             <span className="dash-icon">⚙️</span>
+          </a>
+
+          <a href="http://localhost:8082" target="_blank" rel="noreferrer" className="dash-link">
+            <span>Airflow Pipeline Console <br/><small style={{opacity: 0.6}}>Trigger & monitor the data + training pipeline</small></span>
+            <span className="dash-icon">🌀</span>
           </a>
         </div>
       </div>

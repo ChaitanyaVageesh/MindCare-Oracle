@@ -1,21 +1,22 @@
-version: "3.8"
 services:
   api:
-    build: 
-      context: ./api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./mlruns:/app/mlruns
-    environment:
-      - MODEL_URI=
+      - ./data:/app/data
     restart: always
 
   frontend:
     build:
       context: ./frontend
     ports:
-      - "3000:3000"
+      - "3002:3000"
+    environment:
+      - VITE_API_HOST=api
     depends_on:
       - api
     restart: always
@@ -24,6 +25,7 @@ services:
     image: prom/prometheus:latest
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml
     ports:
       - "9090:9090"
     restart: always
@@ -34,18 +36,35 @@ services:
       - "3001:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
     depends_on:
       - prometheus
     restart: always
 
-  mlflow:
-    image: python:3.10-slim
-    command: >
-      bash -c "pip install mlflow && mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:///mlruns.db --default-artifact-root /app/mlruns"
-    ports:
-      - "5000:5000"
+  airflow:
+    image: apache/airflow:2.8.4-python3.10
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__WEBSERVER__SECRET_KEY: "mindcare-secret-key-12345"
+      _AIRFLOW_DB_MIGRATE: "true"
+      _AIRFLOW_WWW_USER_CREATE: "true"
+      _AIRFLOW_WWW_USER_USERNAME: "admin"
+      _AIRFLOW_WWW_USER_PASSWORD: "admin"
+      _PIP_ADDITIONAL_REQUIREMENTS: "pandas scikit-learn mlflow email-validator"
+      MLFLOW_TRACKING_URI: "http://host.docker.internal:5001"
     volumes:
-      - ./mlruns:/app/mlruns
-    restart: always
+      - ./airflow/dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./src:/opt/airflow/src
+    ports:
+      - "8082:8080"
+    command: standalone
+    restart: on-failure
+
+volumes:
+  grafana_data:

@@ -1,0 +1,13 @@
+stages:
+  process_data:
+    cmd: python src/data_preprocessing.py
+    deps:
+      - data/survey.csv
+      - src/data_preprocessing.py
+    outs:
+      - data/processed/survey_cleaned.csv
+  train:
+    cmd: python src/train.py --data data/processed/survey_cleaned.csv --n_estimators 50
+    deps:
+      - data/processed/survey_cleaned.csv
+      - src/train.py

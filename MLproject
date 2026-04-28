@@ -1,0 +1,10 @@
+name: MindCare-Oracle
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      data: {type: string, default: "data/processed/survey_cleaned.csv"}
+      n_estimators: {type: int, default: 50}
+    command: "python src/train.py --data {data} --n_estimators {n_estimators}"

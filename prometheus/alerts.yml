@@ -1,0 +1,41 @@
+groups:
+  - name: mindcare_api_alerts
+    rules:
+      - alert: HighErrorRate
+        expr: >
+          100 * sum(rate(api_errors_total[5m])) /
+          (sum(rate(api_requests_total[5m])) > 0) > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MindCare API error rate exceeds 5%"
+          description: "Error rate is {{ $value | printf \"%.2f\" }}% over the last 5 minutes."
+
+      - alert: APIDown
+        expr: absent(api_requests_total)
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MindCare API is not responding"
+          description: "No metrics received from the API for 2 minutes."
+
+      - alert: HighLatency
+        expr: >
+          histogram_quantile(0.95, rate(api_request_duration_seconds_bucket[5m])) > 0.2
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "MindCare API P95 latency exceeds 200ms SLO"
+          description: "P95 latency is {{ $value | printf \"%.3f\" }}s."
+
+      - alert: DataDriftDetected
+        expr: model_data_drift_score > 0.2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Data drift detected in incoming predictions"
+          description: "Drift score for {{ $labels.feature }} is {{ $value | printf \"%.3f\" }}."

@@ -1,0 +1,4 @@
+[cache]
+    dir = cache
+[core]
+    analytics = false

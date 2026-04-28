@@ -1,0 +1,13 @@
+.venv/
+.npm-cache/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Local runtime artifacts
+mlruns/
+mlflow.db
+latest_model_uri.txt
+
+# Local notebooks/checkpoints
+.ipynb_checkpoints/

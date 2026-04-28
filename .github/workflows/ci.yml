@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('api/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: Install API dependencies
+        run: pip install -r api/requirements.txt
+
+      - name: Install test + lint tools
+        run: pip install pytest pytest-cov flake8
+
+      - name: Lint with flake8
+        run: |
+          flake8 src/ api/main.py --max-line-length=100 --ignore=E501,W503
+
+      - name: Run preprocessing + model unit tests
+        run: |
+          pytest tests/ -v --tb=short
+
+      - name: Run API unit tests
+        working-directory: api
+        run: |
+          pytest test_api.py -v --tb=short
+
+  dvc-pipeline-check:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install DVC and data deps
+        run: pip install dvc pandas numpy scikit-learn
+
+      - name: Check DVC pipeline is reproducible
+        run: dvc repro --dry
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build API Docker image
+        run: docker build -t mindcare-api:ci ./api
+
+      - name: Build Frontend Docker image
+        run: docker build -t mindcare-frontend:ci ./frontend
