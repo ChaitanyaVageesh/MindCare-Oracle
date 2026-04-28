@@ -55,7 +55,7 @@ services:
       _AIRFLOW_WWW_USER_CREATE: "true"
       _AIRFLOW_WWW_USER_USERNAME: "admin"
       _AIRFLOW_WWW_USER_PASSWORD: "admin"
-      _PIP_ADDITIONAL_REQUIREMENTS: "pandas scikit-learn mlflow email-validator"
+      _PIP_ADDITIONAL_REQUIREMENTS: "pandas scikit-learn mlflow<3.0"
       MLFLOW_TRACKING_URI: "http://host.docker.internal:5001"
     volumes:
       - ./airflow/dags:/opt/airflow/dags

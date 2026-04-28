@@ -1,0 +1,118 @@
+AI USAGE DISCLOSURE AND DEVELOPMENT GUIDELINES
+Project: MindCare Oracle
+
+1. PURPOSE OF THIS DOCUMENT
+
+This document records how AI-assisted tools were used during the development and stabilization of this project. The intent is transparency: to clearly distinguish between AI-assisted implementation support and human-authored engineering decisions.
+
+
+2. PRINCIPLE OF RESPONSIBLE AI ASSISTANCE
+
+AI was used as an accelerator for drafting, iteration, and debugging support. All major technical decisions, architecture tradeoffs, and submission-level design choices were reviewed and finalized by the project author.
+
+AI assistance was treated as:
+- a productivity tool,
+- a coding companion for boilerplate generation,
+- a helper for documentation drafting and refinement.
+
+AI was not treated as:
+- an autonomous source of final truth,
+- a replacement for engineering judgment,
+- a substitute for manual validation.
+
+
+3. WHERE AI WAS USED
+
+3.1 User Interface Assistance
+
+AI support was used for:
+- frontend UI polishing iterations,
+- component-level boilerplate suggestions,
+- improving form structure and interaction flow,
+- minor copy/style refinements for usability.
+
+Human-owned decisions included:
+- final UI structure and interaction priorities,
+- what user inputs to collect,
+- what prediction outputs to display,
+- acceptance of final UX behavior.
+
+
+3.2 Backend and Boilerplate Assistance
+
+AI support was used for:
+- generating/reviewing API boilerplate patterns,
+- suggesting endpoint scaffolding and response model structure,
+- producing helper snippets for logging and error handling consistency.
+
+Human-owned decisions included:
+- endpoint contract selection (`/predict`, `/health`, `/ready`, `/metrics`, `/drift/check`),
+- schema-level data field selection,
+- final exception strategy and operational behavior.
+
+
+3.3 Documentation Assistance
+
+AI support was used for:
+- drafting first versions of explanatory documentation,
+- improving language quality and structure,
+- formatting academic report narrative and section flow.
+
+Human-owned decisions included:
+- final claims made in documentation,
+- factual correctness checks,
+- what was included/excluded in final submission.
+
+
+3.4 Operational Debugging and Stabilization
+
+AI support was used for:
+- identifying startup/runtime blockers quickly,
+- suggesting validation steps for service health,
+- streamlining final project readiness checks.
+
+Human-owned decisions included:
+- actual execution of commands and fixes,
+- assessment of runtime correctness,
+- final go/no-go decision for submission readiness.
+
+
+4. WHAT WAS DECIDED BY THE PROJECT AUTHOR
+
+The following were explicitly author-driven decisions:
+- overall system architecture (frontend/backend/training/tracking/monitoring decomposition),
+- technology stack (FastAPI, React, MLflow, DVC, Airflow, Prometheus, Grafana, Docker Compose),
+- mental health risk prediction framing and target behavior,
+- feature selection and preprocessing direction,
+- model family choice under local resource constraints,
+- MLOps process scope aligned with academic guidelines.
+
+In short: architecture and system design rationale were decided by the author; AI assisted with implementation speed and communication quality.
+
+
+5. QUALITY CONTROL AND VALIDATION APPROACH
+
+To avoid blind reliance on generated output, the following process was applied:
+- manually inspect generated code before acceptance,
+- run service-level checks after integration,
+- verify endpoint behavior against expected API contracts,
+- review documentation for factual alignment with repository state,
+- prefer reproducible scripts/pipelines over ad-hoc one-off commands.
+
+
+6. LIMITATIONS OF AI-ASSISTED DEVELOPMENT
+
+AI-generated suggestions can be:
+- context-incomplete,
+- syntactically correct but operationally unsuitable,
+- overconfident in edge cases.
+
+Therefore, all accepted changes required human verification. Any unresolved gaps were documented transparently in project reporting.
+
+
+7. ACADEMIC INTEGRITY STATEMENT
+
+This project uses AI tools in a disclosed, supervised, and review-driven manner. The intellectual ownership of problem framing, architecture, tradeoff decisions, and final submission acceptance remains with the project author.
+
+AI contributions were limited to assistance in code drafting, boilerplate generation, debugging support, and document refinement, with final engineering accountability retained by the author.
+
