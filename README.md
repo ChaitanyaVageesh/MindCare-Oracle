@@ -2,6 +2,9 @@
 
 MindCare Oracle is an end-to-end AI application for predicting mental health treatment risk using survey-based features. The project is designed as a complete MLOps implementation with automated data preprocessing, model training, experiment tracking, API serving, monitoring, and orchestration.
 
+## Screen Cast Link
+https://drive.google.com/file/d/1bs8-N3KYzixOpWSxkEDIZhlAUcn8VXWS/view?usp=sharing
+
 ## Problem Statement
 
 Given self-reported demographic and workplace-survey attributes, predict whether an individual is likely to require or seek mental health treatment.
