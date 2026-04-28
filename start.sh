@@ -20,9 +20,11 @@ if [ ! -f ".venv/bin/mlflow" ]; then
 fi
 .venv/bin/mlflow server \
   --backend-store-uri "file://$(pwd)/mlruns" \
-  --default-artifact-root "$(pwd)/mlruns" \
+  --default-artifact-root "file://$(pwd)/mlruns" \
+  --artifacts-destination "$(pwd)/mlruns" \
+  --serve-artifacts \
   --host 0.0.0.0 --port 5001 \
-  --allowed-hosts "localhost,127.0.0.1,host.docker.internal,0.0.0.0" \
+  --allowed-hosts "localhost*,127.0.0.1*,host.docker.internal*,0.0.0.0*" \
   > /tmp/mindcare_mlflow.log 2>&1 &
 echo $! > /tmp/mindcare_mlflow.pid
 echo "  PID $(cat /tmp/mindcare_mlflow.pid) — logs at /tmp/mindcare_mlflow.log"

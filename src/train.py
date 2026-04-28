@@ -51,6 +51,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", default="data/processed/survey_cleaned.csv")
     parser.add_argument("--n_estimators", type=int, default=50)
+    parser.add_argument("--max_depth", type=int, default=1)
+    parser.add_argument("--test_size", type=float, default=0.30)
     args = parser.parse_args()
 
     logger.info("Loading data from %s", args.data)
@@ -62,7 +64,7 @@ def main():
     logger.info("Dataset: %d samples, %d features", len(X), len(FEATURE_COLS))
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.30, random_state=0
+        X, y, test_size=args.test_size, random_state=0
     )
 
     # Save training-set baseline for drift detection
@@ -81,7 +83,7 @@ def main():
         ]
     )
 
-    clf = DecisionTreeClassifier(criterion="entropy", max_depth=1)
+    clf = DecisionTreeClassifier(criterion="entropy", max_depth=args.max_depth)
     pipeline = Pipeline(steps=[
         ("preprocessor", preprocessor),
         ("classifier", AdaBoostClassifier(
@@ -94,9 +96,10 @@ def main():
     with mlflow.start_run():
         logger.info("Starting MLflow run")
         mlflow.log_param("n_estimators", args.n_estimators)
+        mlflow.log_param("max_depth", args.max_depth)
         mlflow.log_param("model_type", "AdaBoost")
-        mlflow.log_param("base_estimator", "DecisionTree(depth=1,entropy)")
-        mlflow.log_param("test_size", 0.30)
+        mlflow.log_param("base_estimator", f"DecisionTree(depth={args.max_depth},entropy)")
+        mlflow.log_param("test_size", args.test_size)
         mlflow.log_param("random_state", 42)
         mlflow.log_param("train_samples", len(X_train))
         mlflow.log_param("test_samples", len(X_test))
@@ -125,9 +128,29 @@ def main():
 
         logger.info("Accuracy=%.4f  ROC-AUC=%.4f  F1=%.4f", acc, auc, f1)
 
-        mlflow.sklearn.log_model(pipeline, "model")
+        model_info = mlflow.sklearn.log_model(pipeline, "model")
         mlflow.log_artifact(baseline_path)
         logger.info("Model and baseline artifact logged to MLflow")
+
+        # Register model version in MLflow Model Registry
+        try:
+            mlflow.register_model(model_info.model_uri, "mindcare-oracle-treatment")
+            logger.info("Model registered in MLflow Model Registry as 'mindcare-oracle-treatment'")
+        except Exception as exc:
+            logger.warning("Model registry not available (OK in file-tracking mode): %s", exc)
+
+        # Write metrics.json for DVC metrics tracking
+        metrics_out = {
+            "accuracy": round(acc, 4),
+            "roc_auc": round(auc, 4),
+            "f1_score": round(f1, 4),
+            "precision": round(precision, 4),
+            "recall": round(recall, 4),
+        }
+        metrics_path = "data/metrics.json"
+        with open(metrics_path, "w") as f:
+            json.dump(metrics_out, f, indent=2)
+        logger.info("Metrics written to %s: %s", metrics_path, metrics_out)
 
 
 if __name__ == "__main__":

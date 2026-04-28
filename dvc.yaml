@@ -6,8 +6,22 @@ stages:
       - src/data_preprocessing.py
     outs:
       - data/processed/survey_cleaned.csv
+
   train:
-    cmd: python src/train.py --data data/processed/survey_cleaned.csv --n_estimators 50
+    cmd: >-
+      python src/train.py
+      --data data/processed/survey_cleaned.csv
+      --n_estimators ${train.n_estimators}
+      --max_depth ${train.max_depth}
+      --test_size ${train.test_size}
     deps:
       - data/processed/survey_cleaned.csv
       - src/train.py
+    params:
+      - params.yaml:
+          - train.n_estimators
+          - train.max_depth
+          - train.test_size
+    metrics:
+      - data/metrics.json:
+          cache: false

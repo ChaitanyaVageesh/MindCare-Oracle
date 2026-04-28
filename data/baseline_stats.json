@@ -1,0 +1,68 @@
+{
+  "Age": {
+    "type": "numeric",
+    "mean": 31.88282138794084,
+    "std": 7.133204671618206,
+    "min": 18.0,
+    "max": 65.0
+  },
+  "Gender": {
+    "type": "categorical",
+    "value_counts": {
+      "male": 0.7849829351535836,
+      "female": 0.20022753128555176,
+      "trans": 0.01478953356086462
+    }
+  },
+  "family_history": {
+    "type": "categorical",
+    "value_counts": {
+      "No": 0.6097838452787259,
+      "Yes": 0.3902161547212742
+    }
+  },
+  "benefits": {
+    "type": "categorical",
+    "value_counts": {
+      "Yes": 0.3708759954493743,
+      "Don't know": 0.32992036405005687,
+      "No": 0.2992036405005688
+    }
+  },
+  "care_options": {
+    "type": "categorical",
+    "value_counts": {
+      "No": 0.3993174061433447,
+      "Yes": 0.35381114903299204,
+      "Not sure": 0.24687144482366324
+    }
+  },
+  "anonymity": {
+    "type": "categorical",
+    "value_counts": {
+      "Don't know": 0.6518771331058021,
+      "Yes": 0.2935153583617747,
+      "No": 0.05460750853242321
+    }
+  },
+  "leave": {
+    "type": "categorical",
+    "value_counts": {
+      "Don't know": 0.4379977246871445,
+      "Somewhat easy": 0.21274175199089876,
+      "Very easy": 0.161547212741752,
+      "Somewhat difficult": 0.11149032992036405,
+      "Very difficult": 0.07622298065984073
+    }
+  },
+  "work_interfere": {
+    "type": "categorical",
+    "value_counts": {
+      "Sometimes": 0.36973833902161546,
+      "Don't know": 0.21274175199089876,
+      "Never": 0.16837315130830488,
+      "Rarely": 0.1353811149032992,
+      "Often": 0.11376564277588168
+    }
+  }
+}

@@ -51,7 +51,8 @@ and feature engineering as per MLOps guidelines.
             "cd /opt/airflow && "
             "python src/train.py "
             "--data data/processed/survey_cleaned.csv "
-            "--n_estimators 50"
+            "--n_estimators 100 "
+            "--max_depth 2"
         ),
         doc_md="""
 ## Train Model

@@ -1,0 +1,5 @@
+outs:
+- md5: 6e7bf171a9f00f5ec306e897bceaecb1
+  size: 303684
+  hash: md5
+  path: survey.csv

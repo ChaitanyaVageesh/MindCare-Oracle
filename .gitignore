@@ -11,3 +11,4 @@ latest_model_uri.txt
 
 # Local notebooks/checkpoints
 .ipynb_checkpoints/
+*.mov
